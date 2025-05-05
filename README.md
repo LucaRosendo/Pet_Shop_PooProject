@@ -32,7 +32,7 @@ It was implemented using the Java programming language (or replace with your cho
 
 ## 👥 Team
 
-* Lucas Rosendo 1 – [GitHub](https://github.com/LucaRosendo)
-* Karleandro Silva 2 – [GitHub](https://github.com/karleandrosilva)
+* Lucas Rosendo – [GitHub](https://github.com/LucaRosendo)
+* Karleandro Silva – [GitHub](https://github.com/karleandrosilva)
 
 ---
