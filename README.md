@@ -19,7 +19,7 @@ Implementar um software completo utilizando os principais conceitos de orientaç
 ## 🛠️ Funcionalidades Implementadas
 
 - Cadastro de **clientes**, com nome, CPF, telefone e lista de pets.
-- Cadastro de **pets**, com subclasses como `Cachorro` e `Gato`.
+- Cadastro de **pets**, com subclasses como `Cachorro`, `Gato` e `Passaro`.
 - Associação de pets ao cliente dono.
 - Listagem de pets por cliente.
 - Polimorfismo aplicado para mostrar a descrição de cada pet via método sobrescrito.
@@ -29,7 +29,7 @@ Implementar um software completo utilizando os principais conceitos de orientaç
 
 - `Cliente`: representa o cliente do pet shop. Contém lista de pets associados.
 - `Pet` *(classe abstrata)*: representa um animal genérico. Contém atributos comuns como nome, idade, porte e dono.
-- `Cachorro` e `Gato`: subclasses de `Pet`, cada uma sobrescreve o método `getDescricao()` para descrever o pet adequadamente.
+- `Cachorro`, `Gato` e `Passaro`: subclasses de `Pet`, cada uma sobrescreve o método `getDescricao()` para descrever o pet adequadamente.
 
 ## 📌 Requisitos
 
