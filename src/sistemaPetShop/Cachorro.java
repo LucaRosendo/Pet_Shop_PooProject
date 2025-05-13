@@ -1,4 +1,4 @@
-package projetoSistemaPetShop;
+package sistemaPetShop;
 
 public class Cachorro extends Pet {
 

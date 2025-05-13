@@ -1,4 +1,4 @@
-package projetoSistemaPetShop;
+package sistemaPetShop;
 
 public abstract class Pet {
     private String nome;
