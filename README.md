@@ -1,36 +1,42 @@
-# 🐾 Pet Shop Management System – Object-Oriented Programming Project
+# 🐾 Sistema de Pet Shop
 
-This project is a **Pet Shop Management System** developed with a strong focus on **Object-Oriented Programming (OOP)** principles. The software allows for the registration and management of clients, pets, employees, services, products, and service appointments.
+Este é um projeto desenvolvido para a disciplina de Programação Orientada a Objetos. O sistema simula um pet shop com funcionalidades de cadastro de clientes, pets e agendamento de serviços como banho, tosa e consulta veterinária.
 
-It was implemented using the Java programming language (or replace with your chosen language), with a **console-based interface** (or `JOptionPane`), aiming to **demonstrate and apply core OOP concepts** in a real-world scenario.
+## 🎯 Objetivo do Projeto
 
-## ✅ OOP Concepts Applied
+Implementar um software completo utilizando os principais conceitos de orientação a objetos:
 
-* **Classes and Objects** (with attributes, methods, and constructors)
-* **Inheritance** (`Animal` → `Dog`, `Cat`, etc.)
-* **Polymorphism** (overridden methods in services and animals)
-* **Abstract Classes** (`Service`)
-* **Interfaces** (`Payable`)
-* **Association** (Clients ↔ Pets, Appointments ↔ Employees)
-* **Delegation** (payment logic handled by a separate module)
-* **Collections** (Lists for storing and managing data)
-* **Exception Handling** (e.g., invalid appointments, out-of-stock products)
+- Classes e Objetos
+- Construtores, Atributos e Métodos
+- Herança
+- Polimorfismo
+- Classes Abstratas
+- Interface
+- Associação e Delegação
+- Coleções (`List`)
+- Tratamento de Exceções
 
-## 🧩 Features
+## 🛠️ Funcionalidades Implementadas
 
-* Register clients, pets, and staff members
-* Schedule services like grooming, bathing, and veterinary consultations
-* Manage and sell pet products
-* View service history and appointment reports
-* Simulate payment processes
+- Cadastro de **clientes**, com nome, CPF, telefone e lista de pets.
+- Cadastro de **pets**, com subclasses como `Cachorro`, `Gato` e `Passaro`.
+- Associação de pets ao cliente dono.
+- Listagem de pets por cliente.
+- Polimorfismo aplicado para mostrar a descrição de cada pet via método sobrescrito.
+- Preparado para futuras extensões: agendamento de serviços e uso de exceções.
 
-## 🛠️ Technologies Used
+## 🔍 Estrutura de Classes
 
-* Language: Java 
-* IDE: VS Code
-* Interface: Console or JOptionPane
+- `Cliente`: representa o cliente do pet shop. Contém lista de pets associados.
+- `Pet` *(classe abstrata)*: representa um animal genérico. Contém atributos comuns como nome, idade, porte e dono.
+- `Cachorro`, `Gato` e `Passaro`: subclasses de `Pet`, cada uma sobrescreve o método `getDescricao()` para descrever o pet adequadamente.
 
-## 👥 Team
+## 📌 Requisitos
+
+- Java JDK 8 ou superior
+- IDE de sua preferência (Eclipse, IntelliJ, VS Code, etc.)
+
+## 👥 Equipe
 
 * Lucas Rosendo – [GitHub](https://github.com/LucaRosendo)
 * Karleandro Silva – [GitHub](https://github.com/karleandrosilva)
