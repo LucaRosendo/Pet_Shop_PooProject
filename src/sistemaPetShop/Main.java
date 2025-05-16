@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import sistemaPetShop.exceptions.PetShopException;
+
 public class Main {
 	
 	private List<Cliente> clientes = new ArrayList<>();
 	private Scanner scanner = new Scanner(System.in);
+	private List<Agendamento> agendamentos = new ArrayList<>();
+
 	
     public static void main(String[] args) {
     	Main petshop = new Main();
@@ -17,7 +21,8 @@ public class Main {
             System.out.print("[1] - Gerenciamento de Clientes\n"
                     + "[2] - Gerenciamento de Pets\n"
                     + "[3] - Agendamendo de Serviços\n"
-                    + "[4] - Sair\nRESPOSTA: ");
+                    + "[4] - Listar Agendamentos\n"
+                    + "[5] - Sair\nRESPOSTA: ");
             int opcao = petshop.scanner.nextInt();
         	petshop.scanner.nextLine();
         	
@@ -32,6 +37,9 @@ public class Main {
             	petshop.menuServico();
                 break;
             case 4:
+            	petshop.listarAgendamentos();
+                break;
+            case 5:
             	petshop.fecharPrograma();
             	return;
             default:
@@ -236,9 +244,113 @@ public class Main {
 
     
     private void menuServico() {
+    	
+    	System.out.println("\nDigite o CPF do cliente: ");
+	    String cpf = scanner.nextLine();
+
+	    Cliente clienteEncontrado = null;
+
+	    for (Cliente cliente : clientes) {
+	        if (cliente.getCpf().equals(cpf)) {
+	            clienteEncontrado = cliente;
+	            break;
+	        }
+	    }
+
+	    if (clienteEncontrado == null) {
+	        System.out.println("\nCliente não encontrado com esse CPF.");
+	        return;
+	    }
+	    
+	    if (clienteEncontrado.getPets().isEmpty()) {
+	        System.out.println("\nEste cliente não possui pets cadastrados.");
+	        return;
+	    }
+	    
+	    
+	    // Mostrar pets
+	    System.out.println("\nPets cadastrados:");
+	    List<Pet> pets = clienteEncontrado.getPets();
+	    for (int i = 0; i < pets.size(); i++) {
+	        System.out.println("[" + (i + 1) + "] - " + pets.get(i).getNome());
+	    }
+
+	    System.out.print("\nEscolha o pet para agendar o serviço: ");
+	    int escolhaPet = Integer.parseInt(scanner.nextLine());
+
+	    if (escolhaPet < 1 || escolhaPet > pets.size()) {
+	        System.out.println("\nOpção de pet inválida.");
+	        return;
+	    }
+
+	    Pet petSelecionado = pets.get(escolhaPet - 1);
+
+	    //System.out.println("\n--- MENU DE PETS DO CLIENTE: " + clienteEncontrado.getNome() + " ---");
+    	
+	    // menu
     	System.out.println("\n--- MENU AGENDAMENTO DE SERVIÇOS ---");
-	
+        System.out.print("[1] - Agendar Banho\n"
+                + "[2] - Agendar Banho e Tosa\n"
+                + "[3] - Agendar Adestramento\n"
+                + "[4] - Agendar Consulta Veterinaria\n"
+                + "[5] - Sair\nRESPOSTA: ");
+    	
+    	int opcaoServico = Integer.parseInt(scanner.nextLine());
+        if (opcaoServico == 5) {
+            System.out.println("Saindo do menu de agendamento...");
+            return;
+        }
+
+        Servico servicoEscolhido = null;
+        
+        switch (opcaoServico) {
+        case 1:
+            servicoEscolhido = new Servico("Banho", 40.0, 30);
+            break;
+        case 2:
+            servicoEscolhido = new Servico("Banho e Tosa", 70.0, 60);
+            break;
+        case 3:
+            servicoEscolhido = new Servico("Adestramento", 100.0, 90);
+            break;
+        case 4:
+            servicoEscolhido = new Servico("Consulta Veterinária", 120.0, 60);
+            break;
+        default:
+            System.out.println("\nOpção inválida.");
+            return;
+        }
+        
+        System.out.println("\nInforme a data do agendamento (formato: dd/mm/aaaa): ");
+        String data = scanner.nextLine();
+
+        try {
+            Agendamento agendamento = new Agendamento(petSelecionado, servicoEscolhido, data);
+            agendamento.realizarAgendamento();
+            agendamentos.add(agendamento); // só adiciona se der tudo certo
+        } catch (PetShopException e) {
+            System.out.println("Erro ao agendar: " + e.getMessage());
+        }
 	}
+    
+    private void listarAgendamentos() {
+        if (agendamentos.isEmpty()) {
+            System.out.println("\nNenhum agendamento encontrado.");
+            return;
+        }
+
+        System.out.println("\n--- LISTA DE AGENDAMENTOS ---");
+        for (int i = 0; i < agendamentos.size(); i++) {
+            Agendamento agendamento = agendamentos.get(i);
+            System.out.println("\nAgendamento #" + (i + 1));
+            System.out.println("Pet: " + agendamento.getPet().getNome());
+            System.out.println("Dono: " + agendamento.getPet().getDono().getNome());
+            System.out.println("Serviço: " + agendamento.getServico().getNomeServico());
+            System.out.println("Data: " + agendamento.getData());
+            System.out.println("Preço: R$ " + agendamento.getServico().getPreco());
+            System.out.println("------------------------------");
+        }
+    }
 
 	private void fecharPrograma() {
         System.out.println("Programa encerrado. Até mais!");

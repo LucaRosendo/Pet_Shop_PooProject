@@ -1,24 +1,24 @@
 package sistemaPetShop;
 
 public class Servico implements ServicoExecutavel {
-    private int nomeServico;
-	private float preco;
+    private String nomeServico;
+	private double preco;
 	private int duracaoMinutos;
     
 	// Construtor padrão
  	public Servico(){}
 
-    public Servico(int nomeServico, float preco, int duracaoMinutos) {
+    public Servico(String nomeServico, double preco, int duracaoMinutos) {
         this.nomeServico = nomeServico;
         this.preco = preco;
         this.duracaoMinutos = duracaoMinutos;
     }
 
-    public int getNomeServico() {
+    public String getNomeServico() {
         return nomeServico;
     }
 
-    public float getPreco() {
+    public double getPreco() {
         return preco;
     }
 

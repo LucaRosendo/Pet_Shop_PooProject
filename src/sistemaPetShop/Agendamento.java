@@ -24,9 +24,24 @@ public class Agendamento {
 
     public void realizarAgendamento() {
         System.out.println("Agendamento realizado:");
-        System.out.println("Pet: " + pet.getNome() + " (" + pet.getDono().getNome() + ")");
-        System.out.println("Serviço: " + servico);
+        System.out.println("Dono do Pet: " +  pet.getDono().getNome());
+        System.out.println("Pet: " + pet.getNome());
+        System.out.println("Serviço: " + servico.getNomeServico());
         System.out.println("Data: " + data);
+        System.out.println("Preço: R$ " + servico.getPreco());
         servico.executarServico(); // delegação
     }
+    
+    // Getters se quiser usar depois
+    public Pet getPet() {
+        return pet;
+    }
+
+    public Servico getServico() {
+        return servico;
+    }
+
+    public String getData() {
+        return data;
+    }  
 }
