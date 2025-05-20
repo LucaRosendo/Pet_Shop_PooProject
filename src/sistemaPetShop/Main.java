@@ -1,9 +1,14 @@
 package sistemaPetShop;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import sistemaPetShop.exceptions.ClienteNaoEncontradoException;
+import sistemaPetShop.exceptions.ClienteSemPetsException;
 import sistemaPetShop.exceptions.PetShopException;
 
 public class Main {
@@ -17,34 +22,38 @@ public class Main {
     	Main petshop = new Main();
     	
     	while (true) {
-    		System.out.println("\n--- MENU PETSHOP ---");
-            System.out.print("[1] - Gerenciamento de Clientes\n"
-                    + "[2] - Gerenciamento de Pets\n"
-                    + "[3] - Agendamendo de Serviços\n"
-                    + "[4] - Listar Agendamentos\n"
-                    + "[5] - Sair\nRESPOSTA: ");
-            int opcao = petshop.scanner.nextInt();
-        	petshop.scanner.nextLine();
-        	
-        	switch (opcao) {
-            case 1:
-            	petshop.menuCliente();
-                break;
-            case 2:
-            	petshop.menuPet();
-                break;
-            case 3:
-            	petshop.menuServico();
-                break;
-            case 4:
-            	petshop.listarAgendamentos();
-                break;
-            case 5:
-            	petshop.fecharPrograma();
-            	return;
-            default:
-                System.out.println("\nOPÇÃO INVÁLIDA!");
-        	}
+    		try {
+    			System.out.println("\n--- MENU PETSHOP ---");
+                System.out.print("[1] - Gerenciamento de Clientes\n"
+                        + "[2] - Gerenciamento de Pets\n"
+                        + "[3] - Agendamendo de Serviços\n"
+                        + "[4] - Listar Agendamentos\n"
+                        + "[5] - Sair\nRESPOSTA: ");
+                int opcao = petshop.scanner.nextInt();
+            	petshop.scanner.nextLine();
+            	
+            	switch (opcao) {
+                case 1:
+                	petshop.menuCliente();
+                    break;
+                case 2:
+                	petshop.menuPet();
+                    break;
+                case 3:
+                	petshop.menuServico();
+                    break;
+                case 4:
+                	petshop.listarAgendamentos();
+                    break;
+                case 5:
+                	petshop.fecharPrograma();
+                	return;
+                default:
+                    System.out.println("\nOPÇÃO INVÁLIDA!");
+            	}	
+    		} catch (ClienteSemPetsException cspe) {
+    		    System.out.println("Atenção: " + cspe.getMessage());
+    		}
     	}
     }
     
@@ -83,6 +92,14 @@ public class Main {
         System.out.print("CPF do cliente: ");
         String cpf = scanner.nextLine();
         
+        // verifica se já existe algum cliente com o mesmo CPF
+        for (Cliente cliente : clientes) {
+            if (cliente.getCpf().equals(cpf)) {
+                System.out.println("Erro: Já existe um cliente cadastrado com esse CPF.");
+                return;
+            }
+        }
+        
         System.out.print("Telefone do cliente: ");
         String telefone = scanner.nextLine();
         
@@ -112,8 +129,12 @@ public class Main {
             clientes.remove(clienteRemovido);
             System.out.println("\nCliente: '" + clienteRemovido.getNome() + "' removido com sucesso.");
         } else {
-            System.out.println("\nCliente com CPF informado não encontrado.");
-        }
+        	try {
+	            throw new ClienteNaoEncontradoException(cpf);
+	        } catch (ClienteNaoEncontradoException cnee) {
+	            System.out.println("Erro: " + cnee.getMessage());
+	        }
+        }        
     }
     
     private void listarClientes() {
@@ -131,7 +152,7 @@ public class Main {
     }
 
 
-	private void menuPet() {
+	private void menuPet() throws ClienteSemPetsException {
 		
 		System.out.println("\nDigite o CPF do cliente: ");
 	    String cpf = scanner.nextLine();
@@ -146,8 +167,12 @@ public class Main {
 	    }
 
 	    if (clienteEncontrado == null) {
-	        System.out.println("Cliente não encontrado com esse CPF.");
-	        return;
+	        try {
+	            throw new ClienteNaoEncontradoException(cpf);
+	        } catch (ClienteNaoEncontradoException cnee) {
+	            System.out.println("Erro: " + cnee.getMessage());
+	            return; 
+	        }
 	    }
 
 	    System.out.println("\n--- MENU DE PETS DO CLIENTE: " + clienteEncontrado.getNome() + " ---");
@@ -213,7 +238,7 @@ public class Main {
 	    }
 
 	    cliente.adicionarPet(pet);
-	    System.out.println("Pet cadastrado com sucesso!");
+	    System.out.println("\nPet cadastrado com sucesso!");
 	}
 	
 	private void removerPet(Cliente cliente) {
@@ -228,11 +253,11 @@ public class Main {
 	    }
 	}
 	
-	private void listarPets(Cliente cliente) {
+	private void listarPets(Cliente cliente) throws ClienteSemPetsException {
 	    List<Pet> pets = cliente.getPets();
 
 	    if (pets.isEmpty()) {
-	        System.out.println("Este cliente não possui pets cadastrados.");
+	    	throw new ClienteSemPetsException(cliente.getNome());
 	    } else {
 	        System.out.println("\n--- LISTA DE PETS ---");
 	        for (Pet pet : pets) {
@@ -243,7 +268,7 @@ public class Main {
 	}
 
     
-    private void menuServico() {
+    private void menuServico() throws ClienteSemPetsException {
     	
     	System.out.println("\nDigite o CPF do cliente: ");
 	    String cpf = scanner.nextLine();
@@ -258,15 +283,17 @@ public class Main {
 	    }
 
 	    if (clienteEncontrado == null) {
-	        System.out.println("\nCliente não encontrado com esse CPF.");
-	        return;
+	        try {
+	            throw new ClienteNaoEncontradoException(cpf);
+	        } catch (ClienteNaoEncontradoException cnee) {
+	            System.out.println("Erro: " + cnee.getMessage());
+	            return; 
+	        }
 	    }
 	    
 	    if (clienteEncontrado.getPets().isEmpty()) {
-	        System.out.println("\nEste cliente não possui pets cadastrados.");
-	        return;
+	    	throw new ClienteSemPetsException(clienteEncontrado.getNome());
 	    }
-	    
 	    
 	    // Mostrar pets
 	    System.out.println("\nPets cadastrados:");
@@ -284,8 +311,6 @@ public class Main {
 	    }
 
 	    Pet petSelecionado = pets.get(escolhaPet - 1);
-
-	    //System.out.println("\n--- MENU DE PETS DO CLIENTE: " + clienteEncontrado.getNome() + " ---");
     	
 	    // menu
     	System.out.println("\n--- MENU AGENDAMENTO DE SERVIÇOS ---");
@@ -323,6 +348,20 @@ public class Main {
         
         System.out.println("\nInforme a data do agendamento (formato: dd/mm/aaaa): ");
         String data = scanner.nextLine();
+        
+        // validação para aceitar somente datas validas, importamos 
+        
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy"); // // aqui ele cria um objeto SimpleDateFormat para interpretar a data no formato especificado
+        formato.setLenient(false);  // para não aceitar datas invalidas
+
+        try {
+        	formato.parse(data);; // tenta validar a data, se for inválida ou fora do formato ira gerar ParseException
+        } catch (ParseException e) {
+        	
+        	// caso aconteca o erro na conversão,vai informar o usuário e interrompee a execução do método
+            System.out.println("Data inválida! Use o formato dd/mm/aaaa e uma data válida.");
+            return;
+        }
 
         try {
             Agendamento agendamento = new Agendamento(petSelecionado, servicoEscolhido, data);
