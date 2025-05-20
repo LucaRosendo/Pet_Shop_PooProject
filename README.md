@@ -23,6 +23,7 @@ Implementar um software completo utilizando os principais conceitos de orientaç
 - Associação de pets ao cliente dono.
 - Listagem de pets por cliente.
 - Agendamento de serviços para pets: banho, tosa, adestramento e consulta veterinária.
+- Listagem de agendamentos.
 - Polimorfismo aplicado para mostrar a descrição de cada pet via método sobrescrito.
 - Exceções personalizadas como `ClienteNaoEncontradoException` e `ClienteSemPetsException`.
 
